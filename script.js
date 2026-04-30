@@ -1,8 +1,7 @@
 /* ═══════════════════════════════════════════════
    CONFIG
 ═══════════════════════════════════════════════ */
-const GEMINI_KEY = "AIzaSyColZ6NXaY9D084s4odVUnQ-rPt65_C0II";
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`;
+const API_BASE_URL = 'http://localhost:3000/api';
 
 /* ═══════════════════════════════════════════════
    STATE
@@ -192,12 +191,9 @@ function ob2Next(){
 ═══════════════════════════════════════════════ */
 async function fetchGH(username){
   try {
-    const [uRes, rRes] = await Promise.all([
-      fetch(`https://api.github.com/users/${username}`),
-      fetch(`https://api.github.com/users/${username}/repos?per_page=12&sort=updated`)
-    ]);
-    if(!uRes.ok) return null;
-    return { user: await uRes.json(), repos: rRes.ok ? await rRes.json() : [] };
+    const res = await fetch(`${API_BASE_URL}/github/${username}`);
+    if(!res.ok) return null;
+    return await res.json();
   } catch { return null; }
 }
 
@@ -291,23 +287,16 @@ Catatan penting:
 - Jika GitHub tidak tersedia, kurangi score consistency secara signifikan`;
 
   try {
-    addLog('> Menunggu response Gemini AI...','run');
-    const res = await fetch(GEMINI_URL, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({
-    contents:[{parts:[{text:prompt}]}],
-    generationConfig: {
-    responseMimeType: "application/json"
-    }
-    })
+    addLog('> Menunggu response AI dari server aman...','run');
+    const res = await fetch(`${API_BASE_URL}/evaluate`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ prompt })
     });
 
     const data = await res.json();
-    if(!res.ok) throw new Error(data.error?.message||'API error');
-    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text||'';
-    const cleaned = raw.replace(/```json|```/g,'').trim();
-    const result = JSON.parse(cleaned);
+    if(!res.ok) throw new Error(data.error||'Server API error');
+    const result = data;
     addLog(`✓ Analisis selesai! Score: ${result.overall_score}/100`, 'ok');
     addLog(`✓ Status: ${result.status==='PASS'?'LOLOS ✓':'TIDAK LOLOS ✕'}`, result.status==='PASS'?'ok':'err');
     storeAIResult(result);
@@ -512,10 +501,10 @@ OUTPUT (JSON):
 }`;
 
   try {
-    const res = await fetch(GEMINI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
+    const res = await fetch(`${API_BASE_URL}/match`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ prompt })});
     const data = await res.json();
-    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text||'';
-    const match = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    if (!res.ok) throw new Error(data.error || 'Server API error');
+    const match = data;
     
     el.innerHTML = `
       <div class="match-item">
@@ -579,10 +568,10 @@ OUTPUT (JSON):
   "reason": "short explanation"
 }`;
   try {
-    const res = await fetch(GEMINI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
+    const res = await fetch(`${API_BASE_URL}/pricing`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ prompt })});
     const data = await res.json();
-    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text||'';
-    renderPricing(JSON.parse(raw.replace(/```json|```/g,'').trim()), price);
+    if (!res.ok) throw new Error(data.error || 'Server API error');
+    renderPricing(data, price);
   } catch {
     renderPricing({status:'OK',reason:'Harga kamu berada di kisaran kompetitif untuk pasar global.',recommended_range:'$150 - $500'}, price);
   }
