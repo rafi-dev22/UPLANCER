@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPLANCER — Verified IT Freelance Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0a0f; --bg2:#111118; --bg3:#18181f; --bg4:#1f1f28; --bg5:#252530;
+  --border:rgba(255,255,255,0.06); --border2:rgba(255,255,255,0.11); --border3:rgba(255,255,255,0.18);
+  --text:#eeeef5; --text2:#8888a8; --text3:#4a4a65;
+  --accent:#7c6fcd; --accent2:#b0a4f0; --accent-bg:rgba(124,111,205,0.1); --accent-border:rgba(124,111,205,0.25);
+  --green:#3ecf8e; --green-bg:rgba(62,207,142,0.08); --green-border:rgba(62,207,142,0.25);
+  --red:#e05c5c; --red-bg:rgba(224,92,92,0.08); --red-border:rgba(224,92,92,0.25);
+  --amber:#f5a623; --amber-bg:rgba(245,166,35,0.08); --amber-border:rgba(245,166,35,0.25);
+  --blue:#4a9eff; --blue-bg:rgba(74,158,255,0.08);
+  --r:12px; --rs:8px; --rxs:6px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;}
+h1,h2,h3,h4,.brand{font-family:'Syne',sans-serif;}
+.mono{font-family:'Space Mono',monospace;}
+
+/* PAGES */
+.page{display:none;min-height:100vh;flex-direction:column;}
+.page.active{display:flex;}
+
+/* NAV */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0.9rem 2rem;border-bottom:1px solid var(--border);
+  background:rgba(10,10,15,0.92);backdrop-filter:blur(16px);
+  position:sticky;top:0;z-index:200;
+}
+.brand{font-size:1.35rem;font-weight:800;letter-spacing:-0.5px;color:var(--text);cursor:pointer;}
+.brand span{color:var(--accent2);}
+.brand small{font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:400;color:var(--text3);vertical-align:super;margin-left:2px;letter-spacing:1px;}
+.nav-right{display:flex;align-items:center;gap:0.65rem;}
+
+/* BUTTONS */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:0.4rem;
+  padding:0.5rem 1rem;border-radius:var(--rs);font-size:0.85rem;font-weight:500;
+  cursor:pointer;border:1px solid var(--border2);background:transparent;
+  color:var(--text2);transition:all 0.18s;font-family:'DM Sans',sans-serif;
+  text-decoration:none;white-space:nowrap;
+}
+.btn:hover{background:var(--bg3);color:var(--text);border-color:var(--border3);}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+.btn-primary:hover{background:var(--accent2);border-color:var(--accent2);color:#fff;}
+.btn-success{background:var(--green-bg);border-color:var(--green-border);color:var(--green);}
+.btn-success:hover{background:var(--green);border-color:var(--green);color:#0a0a0f;}
+.btn-danger{background:var(--red-bg);border-color:var(--red-border);color:var(--red);}
+.btn-danger:hover{background:var(--red);border-color:var(--red);color:#fff;}
+.btn-ghost{border-color:transparent;color:var(--text2);}
+.btn-ghost:hover{background:var(--bg3);border-color:var(--border);color:var(--text);}
+.btn-lg{padding:0.75rem 1.5rem;font-size:0.95rem;border-radius:var(--r);}
+.btn-full{width:100%;}
+.btn:disabled{opacity:0.5;cursor:not-allowed;}
+
+/* FORM */
+.form-group{margin-bottom:1.1rem;}
+label{display:block;font-size:0.75rem;color:var(--text2);margin-bottom:0.35rem;letter-spacing:0.4px;text-transform:uppercase;font-weight:500;}
+input[type=text],input[type=email],input[type=password],input[type=url],input[type=number],textarea,select{
+  width:100%;padding:0.7rem 0.9rem;background:var(--bg3);border:1px solid var(--border2);
+  color:var(--text);border-radius:var(--rs);font-size:0.88rem;font-family:'DM Sans',sans-serif;
+  transition:border-color 0.18s;outline:none;appearance:none;
+}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);}
+input::placeholder,textarea::placeholder{color:var(--text3);}
+select option{background:var(--bg3);}
+textarea{resize:vertical;min-height:80px;}
+
+/* FILE UPLOAD */
+.file-drop{
+  border:2px dashed var(--border2);border-radius:var(--r);padding:2rem;
+  text-align:center;cursor:pointer;transition:all 0.2s;background:var(--bg3);
+  position:relative;
+}
+.file-drop:hover,.file-drop.drag{border-color:var(--accent);background:var(--accent-bg);}
+.file-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.file-drop .upload-icon{font-size:2rem;margin-bottom:0.5rem;display:block;}
+.file-drop p{color:var(--text2);font-size:0.85rem;}
+.file-drop small{color:var(--text3);font-size:0.75rem;}
+.file-name{margin-top:0.75rem;padding:0.5rem 0.75rem;background:var(--bg4);border-radius:var(--rs);font-size:0.82rem;color:var(--green);display:none;align-items:center;gap:0.5rem;}
+.file-name.show{display:flex;}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;}
+.card-sm{padding:1rem 1.25rem;}
+.card-xs{padding:0.75rem 1rem;}
+.card-hover{transition:all 0.2s;}
+.card-hover:hover{border-color:var(--border2);transform:translateY(-1px);}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:0.2rem 0.6rem;border-radius:99px;font-size:0.72rem;font-weight:600;letter-spacing:0.2px;}
+.badge-green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+.badge-red{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+.badge-accent{background:var(--accent-bg);color:var(--accent2);border:1px solid var(--accent-border);}
+.badge-amber{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
+.badge-blue{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(74,158,255,0.25);}
+
+/* DIVIDERS */
+hr{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
+.or-divider{text-align:center;position:relative;margin:1.25rem 0;}
+.or-divider::before{content:'';position:absolute;top:50%;left:0;right:0;border-top:1px solid var(--border);}
+.or-divider span{background:var(--bg2);position:relative;padding:0 1rem;color:var(--text3);font-size:0.78rem;}
+
+/* PROGRESS BAR */
+.progress-bar{background:var(--bg4);border-radius:99px;height:7px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:99px;transition:width 1s cubic-bezier(.25,.46,.45,.94);}
+
+/* SCORE CIRCLE */
+.score-circle-outer{display:flex;justify-content:center;margin:1.5rem 0 1rem;}
+.score-circle{position:relative;width:148px;height:148px;}
+.score-circle svg{transform:rotate(-90deg);}
+.score-inner{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;line-height:1;
+}
+.score-inner .num{font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;}
+.score-inner small{font-size:0.65rem;color:var(--text3);letter-spacing:1px;display:block;margin-top:3px;font-family:'DM Sans',sans-serif;}
+
+/* STEP INDICATOR */
+.steps{display:flex;align-items:center;margin-bottom:2rem;}
+.step-dot{
+  width:30px;height:30px;border-radius:50%;border:2px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;font-weight:700;color:var(--text3);background:var(--bg3);
+  flex-shrink:0;z-index:1;font-family:'Syne',sans-serif;transition:all 0.3s;
+}
+.step-dot.active{border-color:var(--accent);color:var(--accent2);background:var(--accent-bg);}
+.step-dot.done{border-color:var(--green);color:var(--green);background:var(--green-bg);}
+.step-line{flex:1;height:2px;background:var(--border);transition:background 0.4s;}
+.step-line.done{background:linear-gradient(90deg,var(--green),var(--accent));}
+
+/* HERO */
+.hero{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:5rem 2rem 4rem;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+  width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,111,205,0.06) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-pill{
+  display:inline-flex;align-items:center;gap:6px;padding:0.3rem 0.9rem;
+  border-radius:99px;border:1px solid var(--accent-border);background:var(--accent-bg);
+  color:var(--accent2);font-size:0.75rem;margin-bottom:1.5rem;letter-spacing:0.3px;
+}
+.hero h1{
+  font-size:3.8rem;font-weight:800;line-height:1.05;letter-spacing:-2px;
+  margin-bottom:1.25rem;max-width:680px;
+}
+.hero h1 em{font-style:normal;color:var(--accent2);}
+.hero p{color:var(--text2);font-size:1rem;max-width:480px;line-height:1.75;margin-bottom:2.5rem;}
+.hero-btns{display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center;}
+.hero-stats{display:flex;gap:3rem;margin-top:3.5rem;flex-wrap:wrap;justify-content:center;}
+.hstat .num{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;}
+.hstat .lbl{color:var(--text3);font-size:0.75rem;margin-top:2px;text-transform:uppercase;letter-spacing:0.5px;}
+
+/* AUTH */
+.auth-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem;}
+.auth-box{width:100%;max-width:400px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:2.25rem;}
+.auth-box h2{font-size:1.5rem;font-weight:800;margin-bottom:0.3rem;}
+.auth-box .sub{color:var(--text2);font-size:0.85rem;margin-bottom:1.75rem;}
+
+/* ROLE SELECT */
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;}
+.role-card{
+  border:2px solid var(--border);border-radius:var(--r);padding:1.75rem 1.25rem;
+  text-align:center;cursor:pointer;transition:all 0.2s;background:var(--bg3);
+}
+.role-card:hover{border-color:var(--accent);background:var(--accent-bg);}
+.role-card .icon{font-size:2.2rem;margin-bottom:0.75rem;display:block;}
+.role-card h3{font-size:1rem;font-weight:700;margin-bottom:0.3rem;}
+.role-card p{color:var(--text2);font-size:0.8rem;line-height:1.5;}
+
+/* DASHBOARD LAYOUT */
+.dash-wrap{display:flex;flex:1;}
+.sidebar{
+  width:232px;background:var(--bg2);border-right:1px solid var(--border);
+  padding:1.25rem;position:sticky;top:61px;height:calc(100vh - 61px);
+  overflow-y:auto;flex-shrink:0;
+}
+.sidebar-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin:1rem 0 0.4rem;}
+.sidebar ul{list-style:none;}
+.sidebar ul li{margin-bottom:2px;}
+.sidebar ul a{
+  display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0.75rem;
+  border-radius:var(--rs);color:var(--text2);font-size:0.85rem;
+  cursor:pointer;transition:all 0.18s;text-decoration:none;
+}
+.sidebar ul a:hover{background:var(--bg3);color:var(--text);}
+.sidebar ul a.active{background:var(--bg4);color:var(--text);border-left:2px solid var(--accent);padding-left:calc(0.75rem - 2px);}
+.main{flex:1;padding:2rem;min-width:0;}
+.page-hdr{margin-bottom:1.75rem;}
+.page-hdr h2{font-size:1.5rem;font-weight:800;}
+.page-hdr p{color:var(--text2);font-size:0.85rem;margin-top:0.2rem;}
+
+/* CATEGORY GRID */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:0.9rem;}
+.cat-card{
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);
+  padding:1.6rem 1.25rem;cursor:pointer;transition:all 0.2s;text-align:center;
+}
+.cat-card:hover{border-color:var(--accent);background:var(--accent-bg);transform:translateY(-2px);}
+.cat-card .ci{font-size:2rem;margin-bottom:0.65rem;display:block;}
+.cat-card h3{font-size:0.95rem;font-weight:700;margin-bottom:0.25rem;}
+.cat-card p{color:var(--text2);font-size:0.77rem;}
+
+/* FREELANCER CARD */
+.fl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:0.9rem;}
+.fl-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:1.35rem;transition:all 0.2s;}
+.fl-card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.fl-head{display:flex;align-items:center;gap:0.9rem;margin-bottom:0.9rem;}
+.fl-avatar{
+  width:46px;height:46px;border-radius:50%;background:var(--accent-bg);
+  border:2px solid var(--accent-border);display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--accent2);flex-shrink:0;
+}
+.fl-name{font-weight:700;font-size:0.9rem;}
+.fl-sub{color:var(--text2);font-size:0.75rem;margin-top:1px;}
+.fl-tags{display:flex;flex-wrap:wrap;gap:0.3rem;margin:0.65rem 0;}
+.tag{padding:0.18rem 0.55rem;background:var(--bg4);border:1px solid var(--border);border-radius:99px;font-size:0.72rem;color:var(--text2);}
+.fl-foot{display:flex;align-items:center;justify-content:space-between;margin-top:0.9rem;padding-top:0.9rem;border-top:1px solid var(--border);}
+.fl-price{font-family:'Syne',sans-serif;font-weight:700;color:var(--green);font-size:0.95rem;}
+
+/* BREADCRUMB */
+.breadcrumb{display:flex;align-items:center;gap:0.4rem;color:var(--text2);font-size:0.82rem;margin-bottom:1.25rem;}
+.breadcrumb a{color:var(--text2);cursor:pointer;text-decoration:none;}
+.breadcrumb a:hover{color:var(--text);}
+.breadcrumb .sep{color:var(--text3);}
+
+/* ONBOARDING */
+.ob-wrap{max-width:620px;margin:0 auto;padding:2rem;}
+.ob-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:2rem;}
+.ob-card h2{font-size:1.25rem;font-weight:800;margin-bottom:0.3rem;}
+.ob-card .sub{color:var(--text2);font-size:0.85rem;margin-bottom:1.5rem;}
+
+/* AI LOG */
+.ai-log{
+  background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);
+  padding:0.9rem;font-family:'Space Mono',monospace;font-size:0.72rem;
+  max-height:180px;overflow-y:auto;margin-top:1rem;
+}
+.ai-log p{margin-bottom:0.3rem;color:var(--text3);}
+.ai-log p.ok{color:var(--green);}
+.ai-log p.warn{color:var(--amber);}
+.ai-log p.run{color:var(--accent2);}
+.ai-log p.err{color:var(--red);}
+
+/* SPINNER */
+.spin{
+  width:40px;height:40px;border:3px solid var(--border2);
+  border-top-color:var(--accent);border-radius:50%;
+  animation:spin 0.9s linear infinite;margin:0 auto 1rem;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* SKILL GAP CARD */
+.gap-item{
+  display:flex;gap:0.75rem;padding:1rem;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--rs);margin-bottom:0.6rem;align-items:flex-start;
+}
+.gap-icon{
+  width:32px;height:32px;border-radius:var(--rxs);background:var(--red-bg);
+  border:1px solid var(--red-border);display:flex;align-items:center;justify-content:center;
+  font-size:0.9rem;flex-shrink:0;
+}
+.gap-content .gap-title{font-size:0.85rem;font-weight:600;margin-bottom:0.2rem;}
+.gap-content .gap-desc{font-size:0.78rem;color:var(--text2);line-height:1.5;}
+
+/* IMPROVEMENT CARD */
+.imp-item{
+  display:flex;gap:0.75rem;padding:1rem;
+  background:var(--bg3);border:1px solid var(--border);
+  border-left:3px solid var(--accent);
+  border-radius:var(--rs);margin-bottom:0.6rem;align-items:flex-start;
+}
+.imp-num{
+  width:24px;height:24px;border-radius:50%;background:var(--accent-bg);
+  border:1px solid var(--accent-border);display:flex;align-items:center;justify-content:center;
+  font-size:0.7rem;font-weight:700;color:var(--accent2);flex-shrink:0;margin-top:1px;
+}
+.imp-content .imp-title{font-size:0.85rem;font-weight:600;margin-bottom:0.2rem;}
+.imp-content .imp-desc{font-size:0.78rem;color:var(--text2);line-height:1.5;}
+
+/* JOB MATCH */
+.match-item{
+  display:flex;align-items:center;gap:0.9rem;
+  padding:1rem 1.1rem;background:var(--bg3);
+  border:1px solid var(--border);border-radius:var(--rs);margin-bottom:0.6rem;
+}
+.match-pct{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;min-width:54px;}
+.match-info{flex:1;}
+.match-name{font-weight:600;font-size:0.88rem;}
+.match-cat{font-size:0.75rem;color:var(--text2);margin-bottom:0.35rem;}
+
+/* PRICING RESULT */
+.pricing-box{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;margin-top:1rem;}
+
+/* ORDER MODAL */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:1000;
+  display:none;align-items:center;justify-content:center;padding:2rem;
+}
+.overlay.open{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);padding:2rem;max-width:440px;width:100%;}
+.modal h3{font-size:1.1rem;font-weight:800;margin-bottom:1.25rem;}
+
+/* TOAST */
+#toast{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:var(--r);padding:0.9rem 1.25rem;color:var(--text);font-size:0.85rem;
+  transform:translateY(80px);opacity:0;transition:all 0.28s;max-width:300px;
+  display:flex;align-items:center;gap:0.5rem;
+}
+#toast.show{transform:translateY(0);opacity:1;}
+
+/* LAYOUT HELPERS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.9rem;}
+.mt1{margin-top:0.5rem;} .mt2{margin-top:1rem;} .mt3{margin-top:1.5rem;}
+.mb1{margin-bottom:0.5rem;} .mb2{margin-bottom:1rem;} .mb3{margin-bottom:1.5rem;}
+.flex{display:flex;} .fb{display:flex;align-items:center;justify-content:space-between;}
+.fc{display:flex;align-items:center;} .gap1{gap:0.5rem;} .gap2{gap:1rem;}
+.muted{color:var(--text2);} .sm{font-size:0.82rem;} .xs{font-size:0.75rem;} .bold{font-weight:700;}
+.tc{text-align:center;}
+.lh{line-height:1.7;}
+
+/* PROFILE SECTION */
+.profile-hero{display:flex;align-items:center;gap:1.25rem;margin-bottom:1.75rem;}
+.profile-av{
+  width:64px;height:64px;border-radius:50%;background:var(--accent-bg);
+  border:2px solid var(--accent-border);display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--accent2);
+}
+
+/* VERDICT BLOCK */
+.verdict-pass{
+  background:var(--green-bg);border:1px solid var(--green-border);
+  border-radius:var(--r);padding:1.25rem;text-align:center;
+}
+.verdict-fail{
+  background:var(--red-bg);border:1px solid var(--red-border);
+  border-radius:var(--r);padding:1.25rem;text-align:center;
+}
+.verdict-icon{font-size:2rem;margin-bottom:0.4rem;}
+.verdict-text{font-weight:700;font-size:1rem;}
+.verdict-sub{font-size:0.82rem;opacity:0.8;margin-top:0.2rem;}
+
+/* SECTION TABS */
+.section-tabs{display:flex;gap:0.4rem;margin-bottom:1.25rem;flex-wrap:wrap;}
+.stab{
+  padding:0.4rem 0.9rem;border-radius:99px;font-size:0.8rem;font-weight:500;
+  cursor:pointer;border:1px solid var(--border2);color:var(--text2);transition:all 0.18s;background:transparent;
+}
+.stab.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+
+@media(max-width:768px){
+  .hero h1{font-size:2.3rem;letter-spacing:-1px;}
+  .g2,.g3{grid-template-columns:1fr;}
+  .dash-wrap{flex-direction:column;}
+  .sidebar{width:100%;height:auto;position:static;padding:0.75rem;}
+  .sidebar ul{display:flex;gap:0.4rem;flex-wrap:wrap;}
+  .sidebar ul li{margin:0;}
+  .main{padding:1.25rem;}
+  nav{padding:0.75rem 1rem;}
+  .role-grid{grid-template-columns:1fr;}
+  .ob-wrap{padding:1.25rem;}
+}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- ORDER MODAL -->
+<div class="overlay" id="orderModal">
+  <div class="modal">
+    <h3>Hire Freelancer</h3>
+    <div id="orderContent"></div>
+    <div class="flex gap2 mt3">
+      <button class="btn btn-primary btn-lg" style="flex:1" onclick="confirmOrder()">Konfirmasi Order</button>
+      <button class="btn btn-lg" onclick="closeModal()">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== LANDING ============================== -->
+<div class="page active" id="page-landing">
+  <nav>
+    <div class="brand">UP<span>LANCER</span><small>AI</small></div>
+    <div class="nav-right">
+      <button class="btn" onclick="showPage('page-auth','login')">Login</button>
+      <button class="btn btn-primary" onclick="showPage('page-auth','register')">Get Started</button>
+    </div>
+  </nav>
+  <div class="hero">
+    <div class="hero-pill">✦ AI-Powered IT Talent Verification</div>
+    <h1>Platform Freelance IT<br>yang <em>Benar-Benar</em> Terverifikasi</h1>
+    <p>Setiap freelancer diverifikasi AI berdasarkan CV dan GitHub. Bukan sekedar marketplace — kami membimbing freelancer menjadi siap global.</p>
+    <div class="hero-btns">
+      <button class="btn btn-primary btn-lg" onclick="showPage('page-auth','register')">Mulai Sekarang</button>
+      <button class="btn btn-lg" onclick="showPage('page-auth','login')">Saya Punya Akun</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="num" style="color:var(--accent2)">500+</div><div class="lbl">Verified Freelancers</div></div>
+      <div class="hstat"><div class="num" style="color:var(--green)">98%</div><div class="lbl">Client Satisfaction</div></div>
+      <div class="hstat"><div class="num" style="color:var(--amber)">2K+</div><div class="lbl">Projects Done</div></div>
+      <div class="hstat"><div class="num" style="color:var(--blue)">AI</div><div class="lbl">Skill Guidance</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== AUTH ============================== -->
+<div class="page" id="page-auth">
+  <nav><div class="brand" onclick="showPage('page-landing')" >UP<span>LANCER</span><small>AI</small></div></nav>
+  <div class="auth-wrap">
+    <div class="auth-box">
+      <div id="auth-login">
+        <h2>Selamat datang kembali</h2>
+        <p class="sub">Login ke akun UPLANCER AI kamu</p>
+        <div class="form-group"><label>Email</label><input type="email" id="l-email" placeholder="nama@email.com"></div>
+        <div class="form-group"><label>Password</label><input type="password" id="l-pass" placeholder="••••••••"></div>
+        <button class="btn btn-primary btn-lg btn-full" onclick="doLogin()">Login</button>
+        <div class="or-divider"><span>atau</span></div>
+        <p class="sm tc muted">Belum punya akun? <a href="#" onclick="toggleAuth('register')" style="color:var(--accent2)">Register gratis</a></p>
+      </div>
+      <div id="auth-register" style="display:none">
+        <h2>Buat Akun Baru</h2>
+        <p class="sub">Bergabung dengan komunitas IT terverifikasi</p>
+        <div class="form-group"><label>Nama Lengkap</label><input type="text" id="r-name" placeholder="Nama kamu"></div>
+        <div class="form-group"><label>Email</label><input type="email" id="r-email" placeholder="nama@email.com"></div>
+        <div class="form-group"><label>Password</label><input type="password" id="r-pass" placeholder="Minimal 8 karakter"></div>
+        <button class="btn btn-primary btn-lg btn-full" onclick="doRegister()">Buat Akun</button>
+        <div class="or-divider"><span>atau</span></div>
+        <p class="sm tc muted">Sudah punya akun? <a href="#" onclick="toggleAuth('login')" style="color:var(--accent2)">Login</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== ROLE ============================== -->
+<div class="page" id="page-role">
+  <nav>
+    <div class="brand">UP<span>LANCER</span><small>AI</small></div>
+    <div class="nav-right"><span class="muted sm" id="role-username"></span></div>
+  </nav>
+  <div class="auth-wrap">
+    <div style="width:100%;max-width:520px">
+      <div class="tc mb3">
+        <h2 style="font-size:1.75rem;font-weight:800;margin-bottom:0.4rem">Kamu bergabung sebagai?</h2>
+        <p class="muted sm">Pilih role untuk memulai pengalaman UPLANCER kamu</p>
+      </div>
+      <div class="role-grid">
+        <div class="role-card" onclick="selectRole('freelancer')">
+          <span class="icon">👨‍💻</span>
+          <h3>Freelancer</h3>
+          <p>Tawarkan jasa IT kamu. Harus lolos AI verification + skill assessment terlebih dahulu.</p>
+        </div>
+        <div class="role-card" onclick="selectRole('client')">
+          <span class="icon">🧑‍💼</span>
+          <h3>Client</h3>
+          <p>Temukan dan hire freelancer IT terverifikasi AI sesuai kebutuhan project kamu.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== CLIENT DASHBOARD ============================== -->
+<div class="page" id="page-client">
+  <nav>
+    <div class="brand">UP<span>LANCER</span><small>AI</small></div>
+    <div class="nav-right">
+      <span class="badge badge-blue">Client</span>
+      <span class="muted sm" id="client-uname"></span>
+      <button class="btn btn-ghost" onclick="doLogout()">Logout</button>
+    </div>
+  </nav>
+  <div class="dash-wrap">
+    <aside class="sidebar">
+      <p class="sidebar-label">Menu</p>
+      <ul>
+        <li><a class="active" onclick="cTab('browse')">🔍 Browse Freelancer</a></li>
+        <li><a onclick="cTab('orders')">📋 My Orders</a></li>
+      </ul>
+    </aside>
+    <div class="main">
+      <!-- Browse -->
+      <div id="c-browse">
+        <div class="page-hdr">
+          <h2>Temukan Freelancer</h2>
+          <p>Semua freelancer sudah terverifikasi AI — terjamin kualitasnya</p>
+        </div>
+        <div id="c-bc" class="breadcrumb" style="display:none">
+          <a onclick="cGoBack()">Browse</a><span class="sep">/</span>
+          <span id="bc1"></span><span id="bc2" class="sep" style="display:none">/</span>
+          <span id="bc3"></span>
+        </div>
+        <div id="c-cats">
+          <div class="cat-grid">
+            <div class="cat-card" onclick="cSelectCat('ai')">
+              <span class="ci">🤖</span><h3>AI / Machine Learning</h3>
+              <p>Computer Vision, NLP, Deep Learning, Data Science</p>
+            </div>
+            <div class="cat-card" onclick="cSelectCat('webdev')">
+              <span class="ci">🌐</span><h3>Web Development</h3>
+              <p>Frontend, Backend, Full Stack, API Development</p>
+            </div>
+          </div>
+        </div>
+        <div id="c-subcats" style="display:none">
+          <p class="muted sm mb2">Pilih subkategori Web Development</p>
+          <div class="cat-grid">
+            <div class="cat-card" onclick="cSelectSub('frontend')"><span class="ci">🎨</span><h3>Frontend</h3><p>React, Vue, Angular, TypeScript, UI/UX</p></div>
+            <div class="cat-card" onclick="cSelectSub('backend')"><span class="ci">⚙️</span><h3>Backend</h3><p>Node.js, Python, Go, Databases, APIs</p></div>
+            <div class="cat-card" onclick="cSelectSub('fullstack')"><span class="ci">🔧</span><h3>Full Stack</h3><p>End-to-end development, DevOps</p></div>
+          </div>
+        </div>
+        <div id="c-flist" style="display:none">
+          <div class="fl-grid" id="flist-container"></div>
+        </div>
+      </div>
+      <!-- Orders -->
+      <div id="c-orders" style="display:none">
+        <div class="page-hdr"><h2>My Orders</h2><p>Daftar order yang sudah kamu buat</p></div>
+        <div id="c-orders-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== FREELANCER ONBOARDING ============================== -->
+<div class="page" id="page-fl-ob">
+  <nav>
+    <div class="brand">UP<span>LANCER</span><small>AI</small></div>
+    <div class="nav-right">
+      <span class="badge badge-accent">Freelancer Verification</span>
+      <button class="btn btn-ghost" onclick="doLogout()">Logout</button>
+    </div>
+  </nav>
+  <div class="ob-wrap">
+
+    <!-- STEP INDICATOR -->
+    <div class="steps" id="steps-ui">
+      <div class="step-dot active" id="sd1">1</div><div class="step-line" id="sl1"></div>
+      <div class="step-dot" id="sd2">2</div><div class="step-line" id="sl2"></div>
+      <div class="step-dot" id="sd3">3</div><div class="step-line" id="sl3"></div>
+      <div class="step-dot" id="sd4">4</div><div class="step-line" id="sl4"></div>
+      <div class="step-dot" id="sd5">5</div>
+    </div>
+
+    <!-- STEP 1: UPLOAD CV -->
+    <div id="ob1" class="ob-card">
+      <h2>Upload CV Kamu</h2>
+      <p class="sub">Upload file CV (PDF/DOC) atau paste teks CV kamu untuk dianalisis AI</p>
+      <div class="form-group">
+        <label>Upload File CV (PDF / DOC / DOCX)</label>
+        <div class="file-drop" id="cv-drop">
+          <input type="file" id="cv-file" accept=".pdf,.doc,.docx,.txt" onchange="handleCvFile(event)">
+          <span class="upload-icon">📄</span>
+          <p>Klik atau drag & drop file CV kamu</p>
+          <small>Format: PDF, DOC, DOCX, TXT — Maks. 5MB</small>
+        </div>
+        <div class="file-name" id="cv-filename">
+          <span>📎</span><span id="cv-fn-text"></span>
+        </div>
+      </div>
+      <div class="or-divider"><span>atau ketik langsung</span></div>
+      <div class="form-group">
+        <label>Teks CV (isi manual)</label>
+        <textarea id="cv-text" rows="7" placeholder="Nama: Budi Santoso&#10;Pendidikan: SMK Teknik Informatika&#10;Skills: JavaScript, React, Node.js, Python&#10;Pengalaman: Magang 3 bulan sebagai Frontend Developer di startup&#10;Project: E-commerce website React + Firebase, REST API with Node.js..."></textarea>
+      </div>
+      <button class="btn btn-primary btn-lg btn-full" onclick="ob1Next()">Lanjut ke GitHub →</button>
+    </div>
+
+    <!-- STEP 2: GITHUB -->
+    <div id="ob2" class="ob-card" style="display:none">
+      <h2>Link GitHub Kamu</h2>
+      <p class="sub">AI akan menganalisis repository dan aktivitas GitHub kamu secara real-time</p>
+      <div class="form-group">
+        <label>GitHub Username</label>
+        <input type="text" id="gh-user" placeholder="contoh: johndoe (tanpa @)">
+      </div>
+      <div class="card card-xs" style="background:var(--bg3);margin-bottom:1rem">
+        <p class="xs muted">💡 AI akan menganalisis: jumlah repo, bahasa pemrograman, aktivitas kontribusi, kualitas project, dan kesesuaian dengan CV kamu.</p>
+      </div>
+      <div class="flex gap2">
+        <button class="btn btn-lg" onclick="obGo(1)">← Kembali</button>
+        <button class="btn btn-primary btn-lg" style="flex:1" onclick="ob2Next()">Mulai Analisis AI →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: AI ANALYSIS -->
+    <div id="ob3" class="ob-card" style="display:none">
+      <!-- Loading state -->
+      <div id="ob3-loading">
+        <div class="tc" style="padding:1.5rem 0 1rem">
+          <div class="spin"></div>
+          <h3 style="font-size:1rem;font-weight:700;margin-bottom:0.3rem">AI Sedang Menganalisis...</h3>
+          <p class="muted sm">Gemini AI memproses CV dan GitHub kamu</p>
+        </div>
+        <div class="ai-log" id="ai-log"></div>
+      </div>
+      <!-- Result state -->
+      <div id="ob3-result" style="display:none">
+        <!-- Score -->
+        <div class="tc mb2">
+          <p class="xs muted" style="letter-spacing:1px;text-transform:uppercase;margin-bottom:0.5rem">AI Verification Result</p>
+          <h2 style="font-size:1.2rem;font-weight:800">Hasil Analisis Profil Kamu</h2>
+        </div>
+        <div class="score-circle-outer">
+          <div class="score-circle">
+            <svg width="148" height="148" viewBox="0 0 148 148">
+              <circle cx="74" cy="74" r="62" fill="none" stroke="#1f1f28" stroke-width="11"/>
+              <circle cx="74" cy="74" r="62" fill="none" stroke="#7c6fcd" stroke-width="11"
+                stroke-linecap="round" stroke-dasharray="389.6" id="score-arc" stroke-dashoffset="389.6"/>
+            </svg>
+            <div class="score-inner">
+              <div class="num" id="score-num">0</div>
+              <small>OVERALL SCORE</small>
+            </div>
+          </div>
+        </div>
+        <!-- Score breakdown -->
+        <div class="card card-sm mb2" id="score-breakdown"></div>
+        <!-- Verdict -->
+        <div id="score-verdict" class="mb2"></div>
+        <!-- TABS for passed/failed details -->
+        <div id="score-tabs" style="display:none">
+          <div class="section-tabs">
+            <button class="stab active" onclick="showScoreTab('feedback')">Feedback AI</button>
+            <button class="stab" onclick="showScoreTab('skillgap')" id="tab-skillgap">Skill Gap</button>
+            <button class="stab" onclick="showScoreTab('improvement')" id="tab-improvement">Improvement Plan</button>
+          </div>
+          <div id="tab-feedback" class="score-tab"></div>
+          <div id="tab-skillgap" style="display:none" class="score-tab"></div>
+          <div id="tab-improvement" style="display:none" class="score-tab"></div>
+        </div>
+        <!-- Actions -->
+        <div id="score-actions" class="mt3"></div>
+      </div>
+    </div>
+
+    <!-- STEP 4: JOB MATCHING -->
+    <div id="ob4" class="ob-card" style="display:none">
+      <h2>AI Job Matching</h2>
+      <p class="sub">Berdasarkan analisis skill kamu, ini posisi yang paling cocok</p>
+      <div id="job-match-list"></div>
+      <button class="btn btn-primary btn-lg btn-full mt3" onclick="obGo(5)">Setup Profil →</button>
+    </div>
+
+    <!-- STEP 5: PROFILE SETUP -->
+    <div id="ob5" class="ob-card" style="display:none">
+      <h2>Setup Profil Freelancer</h2>
+      <p class="sub">Lengkapi profil sebelum publish ke marketplace</p>
+      <div class="g2">
+        <div class="form-group">
+          <label>Kategori</label>
+          <select id="fl-cat" onchange="toggleSubcat()">
+            <option value="">Pilih kategori</option>
+            <option value="AI/ML">AI / Machine Learning</option>
+            <option value="Web Dev">Web Development</option>
+          </select>
+        </div>
+        <div class="form-group" id="fl-subcat-wrap">
+          <label>Subkategori</label>
+          <select id="fl-subcat">
+            <option value="">Pilih subkategori</option>
+            <option value="Frontend">Frontend Developer</option>
+            <option value="Backend">Backend Developer</option>
+            <option value="Full Stack">Full Stack Developer</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Deskripsi Jasa</label>
+        <textarea id="fl-desc" rows="4" placeholder="Jelaskan keahlian dan jasa yang kamu tawarkan..."></textarea>
+      </div>
+      <div class="g2">
+        <div class="form-group">
+          <label>Harga per Project (USD)</label>
+          <input type="number" id="fl-price" placeholder="150">
+        </div>
+        <div class="form-group">
+          <label>Metode Pembayaran</label>
+          <select id="fl-pay">
+            <option value="Bank Transfer">Bank Transfer</option>
+            <option value="PayPal">PayPal</option>
+            <option value="Wise">Wise</option>
+            <option value="Crypto">Crypto</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-success btn-lg btn-full mb2" onclick="checkPricing()">💰 Check Harga dengan AI</button>
+      <div id="pricing-result"></div>
+      <button class="btn btn-primary btn-lg btn-full mt2" onclick="publishProfile()">🚀 Publish ke Marketplace</button>
+    </div>
+
+  </div><!-- /ob-wrap -->
+</div>
+
+<!-- ============================== FREELANCER DASHBOARD ============================== -->
+<div class="page" id="page-fl-dash">
+  <nav>
+    <div class="brand">UP<span>LANCER</span><small>AI</small></div>
+    <div class="nav-right">
+      <span class="badge badge-green">✓ Verified Freelancer</span>
+      <button class="btn btn-ghost" onclick="doLogout()">Logout</button>
+    </div>
+  </nav>
+  <div class="dash-wrap">
+    <aside class="sidebar">
+      <p class="sidebar-label">Dashboard</p>
+      <ul>
+        <li><a class="active" onclick="fTab('overview')">📊 Overview</a></li>
+        <li><a onclick="fTab('profile')">👤 My Profile</a></li>
+        <li><a onclick="fTab('skillgap')">🧠 Skill Insights</a></li>
+        <li><a onclick="fTab('orders')">📋 Incoming Orders</a></li>
+      </ul>
+    </aside>
+    <div class="main">
+      <div id="f-overview">
+        <div class="page-hdr"><h2 id="f-hello">Dashboard</h2><p>Selamat datang di freelancer dashboard kamu</p></div>
+        <div class="g3 mb2">
+          <div class="card card-sm" style="background:var(--bg3)">
+            <div class="muted xs mb1">AI Score</div>
+            <div style="font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;color:var(--accent2)" id="f-score">—</div>
+          </div>
+          <div class="card card-sm" style="background:var(--bg3)">
+            <div class="muted xs mb1">Status</div>
+            <div class="badge badge-green mt1" style="margin-top:0.35rem">✓ Active & Verified</div>
+          </div>
+          <div class="card card-sm" style="background:var(--bg3)">
+            <div class="muted xs mb1">Skill Gaps</div>
+            <div style="font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;color:var(--amber)" id="f-gaps">—</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="muted xs mb2">Preview Profil di Marketplace</div>
+          <div id="f-preview"></div>
+        </div>
+      </div>
+      <div id="f-profile" style="display:none">
+        <div class="page-hdr"><h2>My Profile</h2><p>Detail profil freelancer kamu</p></div>
+        <div id="f-profile-content"></div>
+      </div>
+      <div id="f-skillgap" style="display:none">
+        <div class="page-hdr"><h2>Skill Insights</h2><p>Analisis AI terhadap kekurangan dan rencana pengembangan skill kamu</p></div>
+        <div id="f-skill-content"></div>
+      </div>
+      <div id="f-orders" style="display:none">
+        <div class="page-hdr"><h2>Incoming Orders</h2><p>Order yang masuk ke kamu</p></div>
+        <div id="f-orders-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   CONFIG
+═══════════════════════════════════════════════ */
+const GEMINI_KEY = "AIzaSyD8JY3BR_82tg8qR7BLif3Sik2iVW6-lao";
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`;
+
+/* ═══════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════ */
+let S = {
+  user: null,
+  cvText: '', cvFileName: '',
+  ghUser: '',
+  ghData: null,
+  aiScore: null, aiBreakdown: null,
+  aiFeedback: null, aiStatus: null,
+  skillGaps: [], improvements: [], jobMatches: [],
+  flProfile: null,
+  currentCat: null, currentSub: null,
+};
+
+function saveS(){ localStorage.setItem('up_s', JSON.stringify(S)); }
+function loadS(){ const d = localStorage.getItem('up_s'); if(d) S = JSON.parse(d); }
+function getUsers(){ return JSON.parse(localStorage.getItem('up_users')||'[]'); }
+function saveUsers(u){ localStorage.setItem('up_users', JSON.stringify(u)); }
+function getOrders(){ return JSON.parse(localStorage.getItem('up_orders')||'[]'); }
+function saveOrders(o){ localStorage.setItem('up_orders', JSON.stringify(o)); }
+
+/* ═══════════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════════ */
+function showPage(id, sub){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='page-auth') toggleAuth(sub||'login');
+  window.scrollTo(0,0);
+}
+function toggleAuth(tab){
+  document.getElementById('auth-login').style.display = tab==='login' ? '' : 'none';
+  document.getElementById('auth-register').style.display = tab==='register' ? '' : 'none';
+}
+
+/* ═══════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+function toast(msg, type='info'){
+  const el = document.getElementById('toast');
+  const icons = {success:'✓', error:'✕', warn:'⚠', info:'ℹ'};
+  el.innerHTML = `<span style="color:${type==='success'?'var(--green)':type==='error'?'var(--red)':type==='warn'?'var(--amber)':'var(--accent2)'}">${icons[type]||'ℹ'}</span> ${msg}`;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 3200);
+}
+
+/* ═══════════════════════════════════════════════
+   AUTH
+═══════════════════════════════════════════════ */
+function doLogin(){
+  const email = document.getElementById('l-email').value.trim();
+  const pass = document.getElementById('l-pass').value;
+  if(!email||!pass) return toast('Isi email dan password','error');
+  const users = getUsers();
+  const u = users.find(u => u.email===email && u.pass===pass);
+  if(!u) return toast('Email atau password salah','error');
+  S.user = u; saveS(); routeUser();
+}
+
+function doRegister(){
+  const name = document.getElementById('r-name').value.trim();
+  const email = document.getElementById('r-email').value.trim();
+  const pass = document.getElementById('r-pass').value;
+  if(!name||!email||!pass) return toast('Lengkapi semua field','error');
+  if(pass.length<6) return toast('Password minimal 6 karakter','error');
+  const users = getUsers();
+  if(users.find(u=>u.email===email)) return toast('Email sudah terdaftar','error');
+  const u = {id:Date.now().toString(),name,email,pass,role:null,published:false,aiScore:null,flProfile:null,skillGaps:[],improvements:[]};
+  users.push(u); saveUsers(users);
+  S.user = u; saveS(); routeUser();
+}
+
+function doLogout(){
+  S = {user:null,cvText:'',cvFileName:'',ghUser:'',ghData:null,aiScore:null,aiBreakdown:null,aiFeedback:null,aiStatus:null,skillGaps:[],improvements:[],jobMatches:[],flProfile:null,currentCat:null,currentSub:null};
+  saveS(); showPage('page-landing'); toast('Berhasil logout','success');
+}
+
+function routeUser(){
+  if(!S.user){ showPage('page-landing'); return; }
+  // refresh from DB
+  const users = getUsers();
+  const fresh = users.find(u=>u.id===S.user.id);
+  if(fresh) S.user = fresh;
+  if(!S.user.role){
+    document.getElementById('role-username').textContent = S.user.name;
+    showPage('page-role');
+  } else if(S.user.role==='client'){
+    document.getElementById('client-uname').textContent = S.user.name;
+    showPage('page-client');
+    renderClientOrders();
+  } else if(S.user.role==='freelancer'){
+    if(!S.user.published){ showPage('page-fl-ob'); resetOnboarding(); }
+    else { showPage('page-fl-dash'); renderFlDash(); }
+  }
+}
+
+function selectRole(role){
+  const users = getUsers();
+  const i = users.findIndex(u=>u.id===S.user.id);
+  users[i].role = role; saveUsers(users);
+  S.user = users[i]; saveS(); routeUser();
+}
+
+/* ═══════════════════════════════════════════════
+   ONBOARDING
+═══════════════════════════════════════════════ */
+function resetOnboarding(){
+  for(let i=1;i<=5;i++){
+    const el = document.getElementById('ob'+i);
+    if(el) el.style.display = i===1?'':'none';
+  }
+  updateSteps(1);
+  document.getElementById('ob3-loading').style.display='';
+  document.getElementById('ob3-result').style.display='none';
+  document.getElementById('ai-log').innerHTML='';
+}
+
+function updateSteps(active){
+  for(let i=1;i<=5;i++){
+    const dot = document.getElementById('sd'+i);
+    if(!dot) continue;
+    dot.className='step-dot';
+    if(i<active){ dot.className='step-dot done'; dot.textContent='✓'; }
+    else if(i===active){ dot.className='step-dot active'; dot.textContent=i; }
+    else { dot.textContent=i; }
+    if(i<5){
+      const ln = document.getElementById('sl'+i);
+      if(ln) ln.className='step-line'+(i<active?' done':'');
+    }
+  }
+}
+
+function obGo(step){
+  for(let i=1;i<=5;i++) document.getElementById('ob'+i).style.display = i===step?'':'none';
+  updateSteps(step);
+}
+
+/* CV FILE UPLOAD */
+function handleCvFile(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  if(file.size > 5*1024*1024) return toast('File terlalu besar (maks 5MB)','error');
+  S.cvFileName = file.name;
+  document.getElementById('cv-fn-text').textContent = file.name;
+  document.getElementById('cv-filename').classList.add('show');
+
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    // For non-PDF: read as text; for PDF we'll use the filename + raw extraction note
+    if(file.type==='text/plain'){
+      S.cvText = ev.target.result;
+      document.getElementById('cv-text').value = S.cvText;
+    } else {
+      // PDF/DOC — we can't parse binary in-browser without lib, so note the filename
+      // and use whatever text the user also typed, plus we tell Gemini the filename
+      S.cvText = `[File uploaded: ${file.name}]\n` + (document.getElementById('cv-text').value||'');
+      if(!document.getElementById('cv-text').value){
+        document.getElementById('cv-text').placeholder = `File "${file.name}" sudah di-upload. Tambahkan teks CV di sini jika ada info tambahan.`;
+      }
+    }
+  };
+  reader.readAsText(file);
+  toast('File berhasil di-upload!','success');
+}
+
+function ob1Next(){
+  const fileText = document.getElementById('cv-text').value.trim();
+  const hasFile = S.cvFileName && S.cvFileName.length > 0;
+  if(fileText.length < 30 && !hasFile) return toast('Tambahkan isi CV (minimal 30 karakter)','error');
+  S.cvText = fileText.length > 0 ? (S.cvFileName ? `[File: ${S.cvFileName}]\n` + fileText : fileText) : S.cvText;
+  saveS();
+  obGo(2);
+}
+
+function ob2Next(){
+  const gh = document.getElementById('gh-user').value.trim();
+  if(!gh) return toast('Masukkan username GitHub','error');
+  S.ghUser = gh; saveS();
+  obGo(3);
+  runAI();
+}
+
+/* ═══════════════════════════════════════════════
+   GITHUB API
+═══════════════════════════════════════════════ */
+async function fetchGH(username){
+  try {
+    const [uRes, rRes] = await Promise.all([
+      fetch(`https://api.github.com/users/${username}`),
+      fetch(`https://api.github.com/users/${username}/repos?per_page=12&sort=updated`)
+    ]);
+    if(!uRes.ok) return null;
+    return { user: await uRes.json(), repos: rRes.ok ? await rRes.json() : [] };
+  } catch { return null; }
+}
+
+/* ═══════════════════════════════════════════════
+   AI ANALYSIS ENGINE (GEMINI)
+═══════════════════════════════════════════════ */
+function addLog(msg, cls=''){
+  const log = document.getElementById('ai-log');
+  const p = document.createElement('p');
+  if(cls) p.className = cls;
+  p.textContent = msg;
+  log.appendChild(p);
+  log.scrollTop = log.scrollHeight;
+}
+
+async function runAI(){
+  document.getElementById('ob3-loading').style.display='';
+  document.getElementById('ob3-result').style.display='none';
+  const log = document.getElementById('ai-log');
+  log.innerHTML='';
+
+  addLog('> Memulai AI Analysis Engine...','run');
+  addLog(`> Mengambil data GitHub: ${S.ghUser}...`,'run');
+
+  const gh = await fetchGH(S.ghUser);
+  if(!gh){
+    addLog('⚠ GitHub user tidak ditemukan, analisis hanya berdasarkan CV.','warn');
+  } else {
+    S.ghData = gh;
+    const langs = [...new Set(gh.repos.filter(r=>r.language).map(r=>r.language))].slice(0,6);
+    addLog(`✓ GitHub: ${gh.user.public_repos} repos, ${gh.user.followers} followers`,'ok');
+    addLog(`✓ Tech stack: ${langs.join(', ')||'tidak terdeteksi'}`,'ok');
+    const stars = gh.repos.reduce((a,r)=>a+r.stargazers_count,0);
+    addLog(`✓ Total stars: ${stars}`, 'ok');
+    saveS();
+  }
+
+  addLog('> Mengirim data ke Gemini AI untuk analisis...','run');
+  addLog('> Menjalankan Skill Gap Analysis...','run');
+
+  const repoInfo = gh ? gh.repos.slice(0,10).map(r=>
+    `- ${r.name} (${r.language||'?'}): stars=${r.stargazers_count}, fork=${r.forks_count}, desc="${r.description||''}", readme=${!r.has_wiki}`
+  ).join('\n') : 'Tidak tersedia';
+
+  const prompt = `Kamu adalah AI evaluator untuk platform freelance IT bernama UPLANCER AI.
+Tugas: Evaluasi kesiapan global freelancer IT berdasarkan CV dan data GitHub.
+
+=== DATA CV ===
+${S.cvText}
+
+=== DATA GITHUB ===
+Username: ${S.ghUser}
+${gh ? `Profile:
+- Public Repos: ${gh.user.public_repos}
+- Followers: ${gh.user.followers}
+- Bio: ${gh.user.bio||'kosong'}
+- Account created: ${gh.user.created_at}
+Repositories:
+${repoInfo}` : 'GitHub tidak tersedia'}
+
+=== INSTRUKSI OUTPUT ===
+Berikan evaluasi LENGKAP dalam format JSON (hanya JSON murni, tanpa markdown):
+{
+  "overall_score": <integer 0-100>,
+  "breakdown": {
+    "skill_relevance": <integer 0-100>,
+    "portfolio_quality": <integer 0-100>,
+    "cv_github_consistency": <integer 0-100>,
+    "global_readiness": <integer 0-100>
+  },
+  "status": "lolos" atau "tidak_lolos",
+  "feedback": "<feedback konstruktif dan spesifik, 2-3 kalimat>",
+  "skill_gaps": [
+    {"title": "<nama skill/area yang kurang>", "description": "<penjelasan detail mengapa ini menjadi kekurangan>"},
+    ... (2-5 items)
+  ],
+  "improvements": [
+    {"title": "<aksi konkret>", "description": "<langkah detail yang bisa dilakukan>"},
+    ... (2-5 items)
+  ],
+  "job_matches": [
+    {"role": "<nama role>", "probability": <integer 0-100>, "category": "AI/ML atau Web Dev", "subcategory": "<jika web dev>"},
+    ... (2-3 items, urutkan dari probability tertinggi)
+  ]
+}
+
+Catatan penting:
+- Score lolos: overall >= 60
+- Skill gaps harus spesifik dan relevan dengan data, bukan generik
+- Improvements harus actionable dan konkret
+- Jika GitHub tidak tersedia, kurangi score cv_github_consistency secara signifikan`;
+
+  try {
+    addLog('> Menunggu response Gemini AI...','run');
+    const res = await fetch(GEMINI_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({contents:[{parts:[{text:prompt}]}]})
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error?.message||'API error');
+    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+    const cleaned = raw.replace(/```json|```/g,'').trim();
+    const result = JSON.parse(cleaned);
+    addLog(`✓ Analisis selesai! Score: ${result.overall_score}/100`, 'ok');
+    addLog(`✓ Status: ${result.status==='lolos'?'LOLOS ✓':'TIDAK LOLOS ✕'}`, result.status==='lolos'?'ok':'err');
+    storeAIResult(result);
+    setTimeout(()=>renderAIResult(result), 700);
+  } catch(e) {
+    addLog(`⚠ Gemini API error: ${e.message}`, 'warn');
+    addLog('> Menggunakan fallback analysis...', 'run');
+    const fallback = makeFallback();
+    storeAIResult(fallback);
+    setTimeout(()=>renderAIResult(fallback), 600);
+  }
+}
+
+function makeFallback(){
+  return {
+    overall_score: 58,
+    breakdown: {skill_relevance:62,portfolio_quality:52,cv_github_consistency:55,global_readiness:60},
+    status: 'tidak_lolos',
+    feedback: 'Profil kamu menunjukkan potensi yang baik di bidang IT, namun masih ada beberapa area yang perlu dikembangkan sebelum siap di pasar global.',
+    skill_gaps: [
+      {title:'Advanced JavaScript / TypeScript', description:'CV menunjukkan pengetahuan dasar JS, namun GitHub belum menampilkan project yang memanfaatkan fitur advanced seperti async/await, generics TypeScript, atau design patterns.'},
+      {title:'Real-World Project Portfolio', description:'Repository GitHub belum mencerminkan project nyata berskala medium-large dengan fitur lengkap, dokumentasi, dan deployment.'},
+      {title:'README & Dokumentasi', description:'Sebagian besar repo belum memiliki README yang informatif — hal ini penting untuk menunjukkan profesionalitas kepada klien global.'},
+    ],
+    improvements: [
+      {title:'Buat 2 project portfolio berbasis API', description:'Bangun project full-stack sederhana (misal: task manager, e-commerce mini) dengan REST API, autentikasi, dan deploy ke Vercel/Railway.'},
+      {title:'Tambahkan README profesional di semua repo', description:'Sertakan: deskripsi project, tech stack, cara install, screenshot, dan link demo. Gunakan English untuk menjangkau klien global.'},
+      {title:'Pelajari dan implementasikan TypeScript', description:'Refactor project JavaScript kamu ke TypeScript. Ini meningkatkan nilai profesional secara signifikan di pasar global.'},
+    ],
+    job_matches: [
+      {role:'Junior Frontend Developer', probability:68, category:'Web Dev', subcategory:'Frontend'},
+      {role:'Junior Full Stack Developer', probability:55, category:'Web Dev', subcategory:'Full Stack'},
+    ]
+  };
+}
+
+function storeAIResult(r){
+  S.aiScore = r.overall_score;
+  S.aiBreakdown = r.breakdown;
+  S.aiFeedback = r.feedback;
+  S.aiStatus = r.status;
+  S.skillGaps = r.skill_gaps||[];
+  S.improvements = r.improvements||[];
+  S.jobMatches = r.job_matches||[];
+  saveS();
+  // persist to user record
+  const users = getUsers();
+  const i = users.findIndex(u=>u.id===S.user.id);
+  if(i>=0){
+    users[i].aiScore = r.overall_score;
+    users[i].skillGaps = r.skill_gaps||[];
+    users[i].improvements = r.improvements||[];
+    saveUsers(users);
+    S.user = users[i];
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER AI RESULT
+═══════════════════════════════════════════════ */
+function renderAIResult(r){
+  document.getElementById('ob3-loading').style.display='none';
+  document.getElementById('ob3-result').style.display='';
+  updateSteps(3);
+
+  // Animate score
+  const numEl = document.getElementById('score-num');
+  const arc = document.getElementById('score-arc');
+  const C = 389.6;
+  let cur = 0;
+  const target = r.overall_score;
+  const color = target>=70?'var(--green)':target>=50?'var(--amber)':'var(--red)';
+  const timer = setInterval(()=>{
+    cur = Math.min(cur+2,target);
+    numEl.textContent = cur;
+    numEl.style.color = color;
+    arc.style.stroke = color;
+    arc.style.strokeDashoffset = C - (C*cur/100);
+    if(cur>=target) clearInterval(timer);
+  },18);
+
+  // Breakdown
+  const bd = r.breakdown;
+  const bdRows = [
+    ['Skill Relevance', bd.skill_relevance, 'var(--accent)'],
+    ['Portfolio Quality', bd.portfolio_quality, 'var(--accent2)'],
+    ['CV–GitHub Consistency', bd.cv_github_consistency, 'var(--green)'],
+    ['Global Readiness', bd.global_readiness||bd.skill_relevance, 'var(--amber)'],
+  ];
+  document.getElementById('score-breakdown').innerHTML = bdRows.map(([label,val,color])=>`
+    <div style="margin-bottom:0.75rem">
+      <div class="fb mb1"><span class="sm">${label}</span><span class="sm bold">${val}%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${val}%;background:${color}"></div></div>
+    </div>`).join('');
+
+  // Verdict
+  const passed = r.status==='lolos';
+  document.getElementById('score-verdict').innerHTML = passed
+    ? `<div class="verdict-pass"><div class="verdict-icon">✅</div><div class="verdict-text" style="color:var(--green)">Memenuhi Standar Global</div><div class="verdict-sub muted">Kamu lolos verifikasi AI! Lanjutkan untuk setup profil.</div></div>`
+    : `<div class="verdict-fail"><div class="verdict-icon">❌</div><div class="verdict-text" style="color:var(--red)">Belum Memenuhi Standar Global</div><div class="verdict-sub muted">"Anda belum memenuhi standar global freelancer pada platform ini. Pelajari skill gap di bawah dan coba lagi."</div></div>`;
+
+  // Tabs
+  document.getElementById('score-tabs').style.display='';
+
+  // Tab: Feedback
+  document.getElementById('tab-feedback').innerHTML = `
+    <div class="card card-sm" style="background:var(--bg3)">
+      <div class="xs muted bold mb1">Feedback dari AI:</div>
+      <p class="sm lh">${r.feedback}</p>
+    </div>`;
+
+  // Tab: Skill Gap
+  const sgEl = document.getElementById('tab-skillgap');
+  if(r.skill_gaps && r.skill_gaps.length){
+    sgEl.innerHTML = `<p class="sm muted mb2">AI mengidentifikasi ${r.skill_gaps.length} area yang perlu ditingkatkan:</p>` +
+      r.skill_gaps.map(g=>`
+        <div class="gap-item">
+          <div class="gap-icon">⚠</div>
+          <div class="gap-content">
+            <div class="gap-title">${g.title}</div>
+            <div class="gap-desc">${g.description}</div>
+          </div>
+        </div>`).join('');
+  } else {
+    sgEl.innerHTML = '<p class="sm muted">Tidak ada skill gap signifikan terdeteksi.</p>';
+  }
+
+  // Tab: Improvement
+  const impEl = document.getElementById('tab-improvement');
+  if(r.improvements && r.improvements.length){
+    impEl.innerHTML = `<p class="sm muted mb2">Rencana pengembangan yang direkomendasikan AI:</p>` +
+      r.improvements.map((imp,i)=>`
+        <div class="imp-item">
+          <div class="imp-num">${i+1}</div>
+          <div class="imp-content">
+            <div class="imp-title">${imp.title}</div>
+            <div class="imp-desc">${imp.description}</div>
+          </div>
+        </div>`).join('');
+  } else {
+    impEl.innerHTML = '<p class="sm muted">Tidak ada rekomendasi tambahan.</p>';
+  }
+
+  // Actions
+  if(passed){
+    document.getElementById('score-actions').innerHTML = `
+      <button class="btn btn-success btn-lg btn-full" onclick="goToJobMatch()">Lanjut ke Job Matching →</button>`;
+  } else {
+    document.getElementById('score-actions').innerHTML = `
+      <div class="card card-sm" style="background:var(--amber-bg);border-color:var(--amber-border);margin-bottom:1rem">
+        <p class="sm" style="color:var(--amber)">💡 Pelajari Skill Gap & Improvement Plan di atas, kemudian update CV dan GitHub kamu, lalu submit ulang.</p>
+      </div>
+      <div class="flex gap2">
+        <button class="btn btn-danger btn-lg" style="flex:1" onclick="resubmit()">🔄 Update & Coba Lagi</button>
+      </div>`;
+  }
+}
+
+function showScoreTab(tab){
+  document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));
+  const tabs = ['feedback','skillgap','improvement'];
+  tabs.forEach(t=>{
+    const el = document.getElementById('tab-'+t);
+    if(el) el.style.display = t===tab?'':'none';
+  });
+  // activate button
+  event.target.classList.add('active');
+}
+
+function goToJobMatch(){
+  obGo(4);
+  const el = document.getElementById('job-match-list');
+  el.innerHTML = S.jobMatches.map(m=>`
+    <div class="match-item">
+      <div class="match-pct" style="color:${m.probability>=70?'var(--green)':m.probability>=50?'var(--accent2)':'var(--amber)'}">${m.probability}%</div>
+      <div class="match-info">
+        <div class="match-name">${m.role}</div>
+        <div class="match-cat">${m.category}${m.subcategory?' · '+m.subcategory:''}</div>
+        <div class="progress-bar mt1">
+          <div class="progress-fill" style="width:${m.probability}%;background:${m.probability>=70?'var(--green)':'var(--accent)'}"></div>
+        </div>
+      </div>
+      <span class="badge ${m.probability>=70?'badge-green':m.probability>=50?'badge-accent':'badge-amber'}">${m.probability>=70?'Best Fit':m.probability>=50?'Good Fit':'Possible'}</span>
+    </div>`).join('');
+}
+
+function resubmit(){
+  S.cvText=''; S.cvFileName=''; S.ghUser=''; S.ghData=null;
+  S.aiScore=null; S.aiBreakdown=null; S.aiFeedback=null; S.aiStatus=null;
+  saveS(); resetOnboarding();
+  toast('Update CV & GitHub kamu, lalu coba submit lagi','warn');
+}
+
+/* ═══════════════════════════════════════════════
+   PRICING AI CHECK
+═══════════════════════════════════════════════ */
+async function checkPricing(){
+  const price = document.getElementById('fl-price').value;
+  const cat = document.getElementById('fl-cat').value;
+  const pay = document.getElementById('fl-pay').value;
+  if(!price||!cat) return toast('Isi kategori dan harga dulu','error');
+  const resultEl = document.getElementById('pricing-result');
+  resultEl.innerHTML = `<div class="card card-sm" style="text-align:center"><div class="spin" style="width:24px;height:24px;margin:0 auto 0.5rem"></div><p class="sm muted">Menganalisis harga...</p></div>`;
+  const prompt = `Kamu adalah AI pricing advisor untuk platform freelance IT UPLANCER.
+Freelancer:
+- Kategori: ${cat}
+- Harga yang diajukan: $${price} per project
+- Metode pembayaran: ${pay}
+- AI Score: ${S.aiScore||'tidak diketahui'}
+
+Berikan evaluasi harga dalam JSON murni (tanpa markdown):
+{
+  "verdict": "terlalu_rendah" atau "sesuai" atau "terlalu_tinggi",
+  "message": "<evaluasi 1-2 kalimat spesifik>",
+  "recommended_min": <integer USD>,
+  "recommended_max": <integer USD>,
+  "market_note": "<catatan singkat tentang kondisi pasar global>"
+}`;
+  try {
+    const res = await fetch(GEMINI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
+    const data = await res.json();
+    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+    renderPricing(JSON.parse(raw.replace(/```json|```/g,'').trim()), price);
+  } catch {
+    renderPricing({verdict:'sesuai',message:'Harga kamu berada di kisaran kompetitif untuk pasar Asia Tenggara.',recommended_min:150,recommended_max:500,market_note:'Harga freelance IT global berkisar $50–$200/jam tergantung seniority.'}, price);
+  }
+}
+
+function renderPricing(r, inputPrice){
+  const colors = {terlalu_rendah:'var(--red)',sesuai:'var(--green)',terlalu_tinggi:'var(--amber)'};
+  const icons = {terlalu_rendah:'💸 Terlalu Rendah',sesuai:'✅ Harga Sesuai',terlalu_tinggi:'⚠️ Terlalu Tinggi'};
+  const color = colors[r.verdict]||'var(--text)';
+  document.getElementById('pricing-result').innerHTML = `
+    <div class="pricing-box" style="border-color:${color}25">
+      <div class="fb mb2">
+        <span class="bold" style="color:${color}">${icons[r.verdict]||r.verdict}</span>
+        <span class="xs muted">Input: $${inputPrice}</span>
+      </div>
+      <p class="sm lh muted mb2">${r.message}</p>
+      <div style="background:var(--bg4);border-radius:var(--rs);padding:0.75rem" class="mb1">
+        <span class="xs muted">Rekomendasi harga global:</span>
+        <span class="bold" style="color:var(--green);margin-left:0.5rem">$${r.recommended_min} – $${r.recommended_max}/project</span>
+      </div>
+      ${r.market_note?`<p class="xs muted">${r.market_note}</p>`:''}
+    </div>`;
+}
+
+/* ═══════════════════════════════════════════════
+   PUBLISH PROFILE
+═══════════════════════════════════════════════ */
+function toggleSubcat(){
+  const cat = document.getElementById('fl-cat').value;
+  document.getElementById('fl-subcat-wrap').style.opacity = cat==='Web Dev'?'1':'0.4';
+}
+
+function publishProfile(){
+  const cat = document.getElementById('fl-cat').value;
+  const subcat = document.getElementById('fl-subcat').value;
+  const desc = document.getElementById('fl-desc').value.trim();
+  const price = document.getElementById('fl-price').value;
+  const pay = document.getElementById('fl-pay').value;
+  if(!cat||!desc||!price) return toast('Lengkapi semua field','error');
+  const profile = {
+    category:cat, subcategory:subcat, description:desc,
+    price:parseFloat(price), payment:pay,
+    skills: extractSkills(S.cvText),
+    aiScore: S.aiScore, ghUser: S.ghUser
+  };
+  const users = getUsers();
+  const i = users.findIndex(u=>u.id===S.user.id);
+  users[i].published=true; users[i].flProfile=profile;
+  users[i].aiScore=S.aiScore;
+  users[i].skillGaps=S.skillGaps; users[i].improvements=S.improvements;
+  saveUsers(users); S.user=users[i]; saveS();
+  toast('Profil berhasil dipublish ke marketplace! 🎉','success');
+  setTimeout(()=>{ showPage('page-fl-dash'); renderFlDash(); },1000);
+}
+
+function extractSkills(text){
+  const kw=['JavaScript','TypeScript','React','Vue','Angular','Next.js','Node.js','Express','Python','Django','Flask','FastAPI','PHP','Laravel','Go','Java','Spring','MongoDB','PostgreSQL','MySQL','Redis','Docker','Kubernetes','AWS','GCP','Git','REST API','GraphQL','TensorFlow','PyTorch','Machine Learning','Deep Learning','NLP','Computer Vision','Flutter','Dart','Tailwind'];
+  return kw.filter(s=>text.toLowerCase().includes(s.toLowerCase())).slice(0,7);
+}
+
+/* ═══════════════════════════════════════════════
+   FREELANCER DASHBOARD
+═══════════════════════════════════════════════ */
+function renderFlDash(){
+  const u = S.user;
+  const fp = u.flProfile;
+  document.getElementById('f-hello').textContent = `Halo, ${u.name} 👋`;
+  document.getElementById('f-score').textContent = u.aiScore ? u.aiScore+'/100' : '—';
+  document.getElementById('f-gaps').textContent = (u.skillGaps||[]).length;
+  if(fp) renderFlPreview(fp, u);
+}
+
+function renderFlPreview(fp, u){
+  const skills = fp.skills||[];
+  document.getElementById('f-preview').innerHTML = `
+    <div class="fl-head">
+      <div class="fl-avatar">${u.name.charAt(0).toUpperCase()}</div>
+      <div>
+        <div class="fl-name">${u.name} <span style="color:var(--green);font-size:0.75rem">✓ Verified</span></div>
+        <div class="fl-sub">${fp.category}${fp.subcategory?' · '+fp.subcategory:''}</div>
+      </div>
+    </div>
+    <div class="fl-tags mt1">${skills.map(s=>`<span class="tag">${s}</span>`).join('')||'<span class="xs muted">Skills dari GitHub</span>'}</div>
+    <p class="sm muted lh mt1">${fp.description}</p>
+    <div class="fl-foot">
+      <span class="fl-price">$${fp.price}/project</span>
+      <span class="badge badge-accent">Score: ${u.aiScore}</span>
+    </div>`;
+}
+
+function fTab(tab){
+  ['overview','profile','skillgap','orders'].forEach(t=>{
+    document.getElementById('f-'+t).style.display=t===tab?'':'none';
+  });
+  document.querySelectorAll('#page-fl-dash .sidebar ul a').forEach((a,i)=>{
+    a.classList.toggle('active',i===['overview','profile','skillgap','orders'].indexOf(tab));
+  });
+  if(tab==='profile') renderFlProfile();
+  if(tab==='skillgap') renderFlSkillInsights();
+  if(tab==='orders') renderFlOrders();
+}
+
+function renderFlProfile(){
+  const u = S.user;
+  const fp = u.flProfile;
+  if(!fp){ document.getElementById('f-profile-content').innerHTML='<p class="muted sm">Profil belum tersedia.</p>'; return; }
+  document.getElementById('f-profile-content').innerHTML = `
+    <div class="card">
+      <div class="profile-hero">
+        <div class="profile-av">${u.name.charAt(0).toUpperCase()}</div>
+        <div>
+          <h3 style="font-size:1.1rem;font-weight:800">${u.name}</h3>
+          <p class="muted sm">${fp.category}${fp.subcategory?' · '+fp.subcategory:''}</p>
+          <span class="badge badge-green mt1">✓ AI Verified</span>
+        </div>
+      </div>
+      <hr>
+      <div class="g2">
+        <div><div class="xs muted">Email</div><div class="sm mt1">${u.email}</div></div>
+        <div><div class="xs muted">GitHub</div><div class="sm mt1">${fp.ghUser||'—'}</div></div>
+        <div><div class="xs muted">Harga</div><div class="sm mt1 bold" style="color:var(--green)">$${fp.price}/project</div></div>
+        <div><div class="xs muted">Pembayaran</div><div class="sm mt1">${fp.payment}</div></div>
+        <div><div class="xs muted">AI Score</div><div class="sm mt1 bold" style="color:var(--accent2)">${u.aiScore}/100</div></div>
+      </div>
+      <hr>
+      <div class="xs muted bold mb1">Deskripsi Jasa</div>
+      <p class="sm lh">${fp.description}</p>
+      <hr>
+      <div class="xs muted bold mb1">Skills Terdeteksi AI</div>
+      <div class="fl-tags">${(fp.skills||[]).map(s=>`<span class="tag">${s}</span>`).join('')||'<span class="xs muted">—</span>'}</div>
+    </div>`;
+}
+
+function renderFlSkillInsights(){
+  const u = S.user;
+  const gaps = u.skillGaps||[];
+  const imps = u.improvements||[];
+  const el = document.getElementById('f-skill-content');
+  if(!gaps.length && !imps.length){
+    el.innerHTML='<div class="card tc muted sm">Belum ada data insight. Selesaikan AI verification untuk melihat analisis skill kamu.</div>';
+    return;
+  }
+  el.innerHTML = `
+    <div class="g2" style="margin-bottom:1.5rem">
+      <div class="card card-sm" style="background:var(--red-bg);border-color:var(--red-border)">
+        <div class="xs muted bold mb1" style="color:var(--red)">Skill Gap Teridentifikasi</div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--red)">${gaps.length}</div>
+      </div>
+      <div class="card card-sm" style="background:var(--accent-bg);border-color:var(--accent-border)">
+        <div class="xs muted bold mb1" style="color:var(--accent2)">Improvement Actions</div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent2)">${imps.length}</div>
+      </div>
+    </div>
+    <div class="mb2">
+      <h3 style="font-size:1rem;font-weight:700;margin-bottom:0.9rem">⚠ Skill Gap Analysis</h3>
+      ${gaps.map(g=>`<div class="gap-item"><div class="gap-icon">⚠</div><div class="gap-content"><div class="gap-title">${g.title}</div><div class="gap-desc">${g.description}</div></div></div>`).join('')}
+    </div>
+    <div>
+      <h3 style="font-size:1rem;font-weight:700;margin-bottom:0.9rem">🛠 Improvement Roadmap</h3>
+      ${imps.map((imp,i)=>`<div class="imp-item"><div class="imp-num">${i+1}</div><div class="imp-content"><div class="imp-title">${imp.title}</div><div class="imp-desc">${imp.description}</div></div></div>`).join('')}
+    </div>`;
+}
+
+function renderFlOrders(){
+  const orders = getOrders().filter(o=>o.freelancerId===S.user.id);
+  const el = document.getElementById('f-orders-list');
+  if(!orders.length){
+    el.innerHTML='<div class="card tc muted sm">Belum ada order masuk</div>'; return;
+  }
+  el.innerHTML = orders.map(o=>`
+    <div class="card card-sm card-hover mb2">
+      <div class="fb mb1"><span class="bold sm">${o.clientName}</span><span class="badge badge-amber">Pending</span></div>
+      <p class="sm muted lh">${o.message}</p>
+      <div class="sm mt1" style="color:var(--green)">Budget: $${o.budget}</div>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════════════
+   CLIENT DASHBOARD
+═══════════════════════════════════════════════ */
+function cTab(tab){
+  document.getElementById('c-browse').style.display=tab==='browse'?'':'none';
+  document.getElementById('c-orders').style.display=tab==='orders'?'':'none';
+  document.querySelectorAll('#page-client .sidebar ul a').forEach((a,i)=>{
+    a.classList.toggle('active',i===['browse','orders'].indexOf(tab));
+  });
+  if(tab==='orders') renderClientOrders();
+}
+
+function cSelectCat(cat){
+  S.currentCat=cat; S.currentSub=null;
+  document.getElementById('c-bc').style.display='';
+  document.getElementById('bc1').textContent = cat==='ai'?'AI / Machine Learning':'Web Development';
+  document.getElementById('bc2').style.display='none';
+  document.getElementById('bc3').textContent='';
+  if(cat==='webdev'){
+    document.getElementById('c-cats').style.display='none';
+    document.getElementById('c-subcats').style.display='';
+    document.getElementById('c-flist').style.display='none';
+  } else {
+    showFreelancers(cat, null);
+  }
+}
+
+function cSelectSub(sub){
+  S.currentSub=sub;
+  document.getElementById('bc2').style.display='';
+  document.getElementById('bc3').textContent={frontend:'Frontend',backend:'Backend',fullstack:'Full Stack'}[sub];
+  showFreelancers('webdev',sub);
+}
+
+function cGoBack(){
+  S.currentCat=null; S.currentSub=null;
+  document.getElementById('c-bc').style.display='none';
+  document.getElementById('c-cats').style.display='';
+  document.getElementById('c-subcats').style.display='none';
+  document.getElementById('c-flist').style.display='none';
+}
+
+function showFreelancers(cat, sub){
+  document.getElementById('c-cats').style.display='none';
+  document.getElementById('c-subcats').style.display='none';
+  document.getElementById('c-flist').style.display='';
+  let list = getAllFreelancers().filter(u=>{
+    const fp=u.flProfile; if(!fp) return false;
+    if(cat==='ai') return fp.category==='AI/ML';
+    if(cat==='webdev'){
+      if(!sub) return fp.category==='Web Dev';
+      const m={frontend:'Frontend',backend:'Backend',fullstack:'Full Stack'};
+      return fp.category==='Web Dev' && fp.subcategory===m[sub];
+    }
+    return false;
+  }).map(u=>({...u.flProfile,name:u.name,id:u.id,aiScore:u.aiScore,real:true}));
+
+  if(!list.length) list = getDemos(cat,sub);
+  renderFreelancers(list);
+}
+
+function getAllFreelancers(){ return getUsers().filter(u=>u.role==='freelancer'&&u.published&&u.flProfile); }
+
+function getDemos(cat,sub){
+  const all=[
+    {id:'d1',name:'Rani Kusuma',category:'Web Dev',subcategory:'Frontend',skills:['React','TypeScript','Tailwind','Next.js'],price:220,aiScore:86,description:'Frontend developer spesialis React & Next.js dengan pengalaman 3 tahun di startup SaaS.'},
+    {id:'d2',name:'Fajar Andika',category:'Web Dev',subcategory:'Backend',skills:['Node.js','Express','PostgreSQL','Docker'],price:280,aiScore:79,description:'Backend engineer fokus pada API design, microservices, dan database optimization.'},
+    {id:'d3',name:'Siti Nuraini',category:'Web Dev',subcategory:'Full Stack',skills:['React','Django','PostgreSQL','AWS'],price:380,aiScore:92,description:'Full stack developer dengan expertise Python/React dan pengalaman deploy ke cloud.'},
+    {id:'d4',name:'Budi Prasetyo',category:'AI/ML',subcategory:'',skills:['Python','TensorFlow','PyTorch','NLP'],price:450,aiScore:89,description:'AI/ML engineer spesialis NLP dan Computer Vision, lulusan S1 Informatika.'},
+    {id:'d5',name:'Dewi Lestari',category:'AI/ML',subcategory:'',skills:['Python','Scikit-learn','Pandas','MLflow'],price:380,aiScore:83,description:'Data scientist dengan portofolio di bidang prediksi dan analitik bisnis berbasis ML.'},
+    {id:'d6',name:'Arif Maulana',category:'Web Dev',subcategory:'Frontend',skills:['Vue','Nuxt.js','SCSS','Figma'],price:190,aiScore:77,description:'Frontend developer dengan keahlian Vue ekosistem dan eye for design yang kuat.'},
+  ];
+  return all.filter(d=>{
+    if(cat==='ai') return d.category==='AI/ML';
+    if(cat==='webdev'){
+      if(!sub) return d.category==='Web Dev';
+      const m={frontend:'Frontend',backend:'Backend',fullstack:'Full Stack'};
+      return d.category==='Web Dev'&&d.subcategory===m[sub];
+    }
+    return false;
+  });
+}
+
+function renderFreelancers(list){
+  const el = document.getElementById('flist-container');
+  if(!list.length){
+    el.innerHTML='<div class="card tc muted sm" style="grid-column:1/-1">Belum ada freelancer di kategori ini</div>'; return;
+  }
+  el.innerHTML = list.map(f=>`
+    <div class="fl-card">
+      <div class="fl-head">
+        <div class="fl-avatar">${f.name.charAt(0).toUpperCase()}</div>
+        <div>
+          <div class="fl-name">${f.name} <span style="color:var(--green);font-size:0.72rem">✓</span></div>
+          <div class="fl-sub">${f.category}${f.subcategory?' · '+f.subcategory:''}</div>
+        </div>
+      </div>
+      <div class="fl-tags">${(f.skills||[]).map(s=>`<span class="tag">${s}</span>`).join('')}</div>
+      <p class="sm muted lh">${f.description}</p>
+      <div class="fl-foot">
+        <span class="fl-price">$${f.price}/project</span>
+        <div class="flex gap1">
+          <span class="badge badge-accent">Score ${f.aiScore}</span>
+          <button class="btn btn-success" onclick="openOrder('${f.id}','${f.name}',${f.price})">Hire</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════════════
+   ORDER FLOW
+═══════════════════════════════════════════════ */
+function openOrder(flId,flName,price){
+  document.getElementById('orderContent').innerHTML=`
+    <div class="card card-sm" style="background:var(--bg3);margin-bottom:1rem">
+      <div class="bold sm">${flName}</div>
+      <div class="muted xs">Harga mulai $${price}/project</div>
+    </div>
+    <div class="form-group"><label>Deskripsi Project</label><textarea id="o-msg" rows="4" placeholder="Jelaskan kebutuhan project kamu secara detail..."></textarea></div>
+    <div class="form-group"><label>Budget (USD)</label><input type="number" id="o-budget" placeholder="${price}"></div>`;
+  const m = document.getElementById('orderModal');
+  m.dataset.flid=flId; m.dataset.flname=flName;
+  m.classList.add('open');
+}
+
+function closeModal(){ document.getElementById('orderModal').classList.remove('open'); }
+
+function confirmOrder(){
+  const msg=document.getElementById('o-msg').value.trim();
+  const budget=document.getElementById('o-budget').value;
+  const m=document.getElementById('orderModal');
+  if(!msg||!budget) return toast('Lengkapi semua field','error');
+  const orders=getOrders();
+  orders.push({
+    id:Date.now().toString(),
+    clientId:S.user.id, clientName:S.user.name,
+    freelancerId:m.dataset.flid, freelancerName:m.dataset.flname,
+    message:msg, budget, status:'pending',
+    createdAt:new Date().toISOString()
+  });
+  saveOrders(orders);
+  closeModal();
+  toast(`Order berhasil dikirim ke ${m.dataset.flname}! 🎉`,'success');
+}
+
+function renderClientOrders(){
+  const orders=getOrders().filter(o=>o.clientId===S.user.id);
+  const el=document.getElementById('c-orders-list');
+  if(!orders.length){ el.innerHTML='<div class="card tc muted sm">Belum ada order</div>'; return; }
+  el.innerHTML=orders.map(o=>`
+    <div class="card card-sm card-hover mb2">
+      <div class="fb mb1">
+        <span class="bold sm">→ ${o.freelancerName}</span>
+        <span class="badge badge-amber">Pending</span>
+      </div>
+      <p class="sm muted lh">${o.message}</p>
+      <div class="sm mt1" style="color:var(--green)">Budget: $${o.budget}</div>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+loadS();
+if(S.user) routeUser();
+</script>
+</body>
+</html>
